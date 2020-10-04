@@ -16,7 +16,7 @@
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * FITNESS FOR A PARTICULAR PURPgit remote add origin git@github.com:rasmusbonnedal/display_test.gitOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
@@ -52,9 +52,8 @@ void setup() {
   // Initialising the UI will init the display too.
   display.init();
 
-  // display.flipScreenVertically();
+  display.flipScreenVertically();
   display.setFont(ArialMT_Plain_10);
-
 }
 
 void drawFontFaceDemo() {
@@ -145,18 +144,12 @@ long timeSinceLastModeSwitch = 0;
 void loop() {
   // clear the display
   display.clear();
-  // draw the current demo method
-  demos[demoMode]();
 
-  display.setTextAlignment(TEXT_ALIGN_RIGHT);
-  display.drawString(10, 128, String(millis()));
-  // write the buffer to the display
+  display.setFont(ArialMT_Plain_10);
+  display.setTextAlignment(TEXT_ALIGN_LEFT);
+  int v = analogRead(34);
+  display.drawString(0, 10, String(v));
   display.display();
-
-  if (millis() - timeSinceLastModeSwitch > DEMO_DURATION) {
-    demoMode = (demoMode + 1)  % demoLength;
-    timeSinceLastModeSwitch = millis();
-  }
   counter++;
-  delay(10);
+  delay(200);
 }
