@@ -23,3 +23,29 @@ void loop() {
 ```
 10. Tryck på pilknappen på menyraden (Upload). När det står "Connecting..." håll inne BOOT-knappen tills texten börjar rulla. När den är klar (Hard resetting via RTS pin..." tryck på EN för att resetta modulen. Nu ska det stå "Hej från Arduino!" i serial monitorn.
 11. Grattis, nu är allting klart för att köra.
+
+## Displayen
+Displayen är monokrom (svart-vit) och har 128x64 punkter. För att använda den gör man följande:
+1. Gå till Tools > Library Manager, sök efter "ESP32 OLED Driver".
+2. Installera "ESP8266 and ESP32 OLED driver for SSD1306 displays" från ThingPulse.
+```
+#include "SSD1306Wire.h"
+
+SSD1306Wire display(0x3c, 5, 4);
+
+void setup() {
+  Serial.begin(115200);
+  display.init();
+  Serial.println("Hej från Display!");
+}
+
+void loop() {
+  display.clear();
+  display.drawString(0, 0, "Hallå display!");
+  display.drawString(0, 10, "Här är jag!");
+  display.display();
+  delay(100);
+}
+```
+3. Tryck på pilknappen på menyraden (Upload). När det står "Connecting..." håll inne BOOT-knappen tills den röda texten börjar rulla.
+4. Nu ska text komma upp på displayen!
