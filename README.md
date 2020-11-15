@@ -117,6 +117,14 @@ void setup() {
 `pinMode()` ställer in en pinne att vara ut eller in. I det här programmet sätter vi pin 17 till ut-pinne (OUTPUT).
 
 2. Loop
+```
+void loop() {
+  digitalWrite(17, HIGH);
+  delay(1000);
+  digitalWrite(17, LOW);
+  delay(1000);
+}
+```
 Det som står inom `loop() { ... }` körs om och om igen tills man stänger av modulen eller startar om.
 
 `digitalWrite(17, HIGH);` sätter en digital ut-pinne till på eller av. Ibland kallar man på för hög och av för låg, det är därför det står `HIGH` vilket här sätter pin 17 till på, alltså att det kommer spänning på pinnen och lysdioden lyser.
