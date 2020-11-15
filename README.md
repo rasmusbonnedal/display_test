@@ -21,7 +21,7 @@ void setup() {
 void loop() {
 }
 ```
-10. Tryck på pilknappen på menyraden (Upload). ~När det står "Connecting..." håll inne BOOT-knappen tills texten börjar rulla. När den är klar (Hard resetting via RTS pin..." tryck på EN för att resetta modulen.~ Nu ska det stå "Hej från Arduino!" i serial monitorn.
+10. Tryck på pilknappen på menyraden (Upload). Nu ska det stå "Hej från Arduino!" i serial monitorn.
 11. Grattis, nu är allting klart för att köra.
 
 ## Displayen
@@ -47,7 +47,7 @@ void loop() {
   delay(100);
 }
 ```
-3. Tryck på pilknappen på menyraden (Upload). ~När det står "Connecting..." håll inne BOOT-knappen tills den röda texten börjar rulla.~
+3. Tryck på pilknappen på menyraden (Upload).
 4. Nu ska text komma upp på displayen!
 
 ## Kopplingsbord
@@ -65,14 +65,76 @@ På breadboardens ovansida och undersida finns en röd (+) och en blå (-) linje
 
 Det är på breadboardet vi kopplar ihop våra experiment.
 
-## 1. Lysdioder
+## 1. Lysdioden
 En lysdiod är en komponent som släpper igenom ström åt ett håll och då lyser den. Det längre av de två benen är positiv (+) och det korta är negativ (-). I det här experimentet ska vi koppla in en lysdiod till en av modulens datapinnar och blinka med den. För att det inte ska komma för mycket ström genom dioden och riskera att skada modulen eller lysdioden ska vi också ha ett motstånd.
 
 ### Datapinnar
 Modulen har en massa datapinnar som är numrerade. De kan ställas in från programmet att antingen vara digitala (av eller på) eller analoga (de kan ge ifrån sig eller läsa av olika spänningsnivåer). De kan också ställas in att vara i ut-läge (de ger ifrån sig spänning) eller in-läge (de detekterar spänning som kommer in). I det här läget ska vi göra en pinne digital och i ut-läge för att styra lysdioden.
 
+### Koppling
 1. Koppla en svart sladd från GND på modulen (GND är förkortning för ground vilket betyder jord. Det är vad man kallar den negativa (-) polen.) till den ett hål på den blåa linjen på breadboarden.
-2. Koppla en annan sladd (i exemplet gul) från pin 16 på modulen (Det är den pinne vi ska använda som utpinne) till en plats i kolumn 0 på breadboarden.
+<img src="exp1-1.jpg" width="512">
+
+2. Koppla en annan sladd (i exemplet gul) från pin 17 på modulen (Det är den pinne vi ska använda som utpinne) till en plats i kolumn 0 på breadboarden.
+<img src="exp1-2.jpg" width="512">
+
 3. Sätt i en lysdiod med det långa benet i kolumn 0 och det korta i kolumn 1. Nu är lysdiodens pluspol ihopkopplad med pin 16 på modulen med hjälp av breadboarden och den gula sladden.
+<img src="exp1-3.jpg" width="512">
+
 4. Sätt ett motstånd på 1000 ohm mellan kolum 1 (samma som lysdiodens minuspol) och kolumn 6.
-5. Koppla en svart sladd från kolumn 6 (motståndets andra ben) och den blåa linjen där uppe. Nu är kretsen kopplad och när modulen lägger spänning på pinne 16 kommer ström flyta genom den gula sladden, genom lysdioden, genom motståndet och till slut genom de två svarta sladdarna till modulens minuspol.
+<img src="exp1-4.jpg" width="512">
+
+5. Koppla en svart sladd från kolumn 6 (motståndets andra ben) och den blåa linjen där uppe. Nu är kretsen kopplad och när modulen lägger spänning på pinne 17 kommer ström flyta genom den gula sladden, genom lysdioden, genom motståndet och till slut genom de två svarta sladdarna till modulens minuspol.
+<img src="exp1-5.jpg" width="512">
+
+### Programmet
+Skriv in detta i en ny sketch i Arduino:
+```
+void setup() {
+  pinMode(17, OUTPUT);
+}
+
+void loop() {
+  digitalWrite(17, HIGH);
+  delay(1000);
+  digitalWrite(17, LOW);
+  delay(1000);
+}
+```
+Tryck på pilknappen på menyraden (Upload). Nu ska lysdioden blinka.
+
+### Beskrivning av programmet
+Här är en genomgång av programmets beståndsdelar:
+1. Setup
+Det som står inom `setup() { ... }` (kallas för måsvingar eller krullparanteser) körs en gång när programmet startar. Här gör man inställningarna som behövs i början, i det här fallet att säga att pin 17 är en ut-pinne.
+Man skriver `{` genom att trycka AltGr-7 på tangentbordet och `}` med AltGr-0.
+```
+void setup() {
+  pinMode(17, OUTPUT);
+}
+```
+
+`pinMode()` ställer in en pinne att vara ut eller in. I det här programmet sätter vi pin 17 till ut-pinne (OUTPUT).
+
+2. Loop
+Det som står inom `loop() { ... }` körs om och om igen tills man stänger av modulen eller startar om.
+
+`digitalWrite(17, HIGH);` sätter en digital ut-pinne till på eller av. Ibland kallar man på för hög och av för låg, det är därför det står `HIGH` vilket här sätter pin 17 till på, alltså att det kommer spänning på pinnen och lysdioden lyser.
+
+`delay(1000);` väntar 1000 millisekunder vilket är samma sak som en sekund.
+
+`digitalWrite(17, LOW);` sätter pinne 17 till av (LOW).
+
+`delay(1000);` väntar en sekund igen.
+
+Hela loopen tar alltså ungefär två sekunder eftersom den väntar en sekund två gånger. Sedan börjar den om igen.
+
+### Utmaning
+Kan du få den att blinka långsammare, exempelvis att lysa i två sekunder innan den släcks? Kom ihåg att när du ändrat programmet trycker du pilknappen på menyraden för att ladda upp ditt ändrade program och köra det på modulen.
+
+### Kretsschema
+Ofta ritar man kretsar som ett schema för att lättare se hur den hänger ihop. Här är kretsen vi kopplat ihop illustrerad som ett schema:
+
+![](krets1.png)
+
+ESP är modulen. Den har massor av pinnar men bara de två vi använder är utmärkta. D1 är lysdioden, basen på triangeln är plus och spetsen som går mot ett streck är minus. R1 är motståndet (1 kΩ är 1000 ohm).
