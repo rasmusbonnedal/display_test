@@ -261,9 +261,25 @@ Det var mycket att gå igenom! Det gör ingenting om du inte hänger med i allt 
 Kan du ändra så att den skriver något annat på displayen? Ändra och provkör (tryck på pilen på menyraden).
 Kan du göra så att texten börjar någon annanstans än i övre högra hörnet? Prova dig fram!
 
+## 3. Den inbyggda lysdioden
+Det finns en blå lysdiod på modulen som är kopplad till pin 16. Det här är ett kort experiment som ska få den att blinka. Den är praktisk att använda om man ska testa någonting.
 
+### Koppling
+Eftersom dioden sitter på kortet redan behöver du inte koppla någonting.
 
+### Programmet
+Skriv in programmet i en ny sketch och kör. Vad händer?
+```c++
+void setup() {
+  pinMode(16, OUTPUT);
+}
 
+void loop() {
+  digitalWrite(16, HIGH);
+  delay(1000);
+  digitalWrite(16, LOW);
+  delay(1000);
+}
+```
 
-
-
+Det här programmet är likt programmet från experiment 1. Vad är skillnaden?
