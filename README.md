@@ -12,7 +12,7 @@
 7. Öppna Serial Monitor (Tools > Serial Monitor) och ställ in den på 115200 baud.
 8. Tryck på EN på modulen, nu ska text från modulen visas i monitorn.
 9. Skriv in följande i sketchen och spara:
-```
+```c++
 void setup() {
   Serial.begin(115200);
   Serial.println("Hej från Arduino!");
@@ -29,7 +29,7 @@ Displayen är monokrom (svart-vit) och har 128x64 punkter. För att använda den
 1. Gå till Tools > Library Manager, sök efter "ESP32 OLED Driver".
 2. Installera "ESP8266 and ESP32 OLED driver for SSD1306 displays" från ThingPulse.
 3. Skriv in följande i sketchen och spara:
-```
+```c++
 #include "SSD1306Wire.h"
 
 SSD1306Wire display(0x3c, 5, 4);
@@ -48,6 +48,7 @@ void loop() {
   delay(100);
 }
 ```
+Man behöver inte förstå vad programmet gör just nu. Vi kommer gå igenom och använda en del i taget längre fram.
 4. Tryck på pilknappen på menyraden (Upload).
 5. Nu ska text komma upp på displayen!
 
@@ -90,7 +91,7 @@ Modulen har en massa datapinnar som är numrerade. De kan ställas in från prog
 
 ### Programmet
 Skriv in detta i en ny sketch i Arduino:
-```
+```c++
 void setup() {
   pinMode(17, OUTPUT);
 }
@@ -109,7 +110,7 @@ Här är en genomgång av programmets beståndsdelar:
 #### 1. Setup
 Det som står inom `setup() { ... }` körs en gång när programmet startar. Här gör man inställningarna som behövs i början, i det här fallet att säga att pin 17 är en ut-pinne.
 `{}`kallas för måsvingar eller krullparanteser. Man skriver `{` genom att trycka AltGr-7 på tangentbordet och `}` med AltGr-0.
-```
+```c++
 void setup() {
   pinMode(17, OUTPUT);
 }
@@ -118,7 +119,7 @@ void setup() {
 `pinMode()` ställer in en pinne att vara ut eller in. I det här programmet sätter vi pin 17 till ut-pinne (OUTPUT).
 
 #### 2. Loop
-```
+```c++
 void loop() {
   digitalWrite(17, HIGH);
   delay(1000);
@@ -157,9 +158,41 @@ Ofta ritar man kretsar som ett schema för att lättare se hur den hänger ihop.
 ESP32 är modulen. Den har massor av pinnar men bara de två vi använder är utmärkta. D1 är lysdioden, basen på triangeln är plus och spetsen som går mot ett streck är minus. R1 är motståndet (1 kΩ är 1000 ohm).
 
 ## 2. Knapp
-```
-#include "SSD1306Wire.h"
 
+| ![Knapp](pushbutton.jpg) |
+| :--: |
+| *Knapp* |
+
+Det följer med några knappar. De släpper igenom ström mellan sina två övre ben när knappen är nedtryckt. När knappen inte är nedtryckt släpper den inte igenom någon ström. I det här experimentet ska vi koppla knappen till en in-pinne på modulen och ändra texten på skärmen beroende på om knappen är intryckt eller inte.
+
+### Inpinne
+Vi använder en av datapinnarna som beskrivs i det förra experimentet som inpinne. Det gör att vi kan fråga den pinnen om det kommer ström till den eller inte. Vi ska använda en funktion i modulen som kallas pullup, vilket betyder att pinnen blir kopplad till spänning (3.3 volt) automatiskt. Den är kopplad via ett stort motstånd vilket gör att strömmen blir liten. Detta gör att vi läser pinnen som hög när den inte är kopplad. Vi ska koppla den till jord (GND) genom knappen så att pinnen blir jordad när vi trycker på knappen. Då läser vi pinnen som låg.
+
+### Kretsen
+
+| ![Krets](krets-2.png) |
+| :--: |
+| *Kretsen vi ska bygga* |
+
+1. Sätt en knapp på rad E och F, på kolumnerna 0 och 2.
+![](exp2-1.jpg)
+
+2. Koppla en svart sladd från GND på modulen till blåa linjen på breadboarden.
+![](exp2-2.jpg)
+
+3. Koppla en svart sladd från blåa linjen till kolumn 2 på breadboarden.
+![](exp2-3.jpg)
+
+4. Koppla en brun sladd från pin 17 på modulen till kolumn 0 på breadborden.
+![](exp2-4.jpg)
+
+
+### Programmet
+Det här programmet skriver ut text på displayen på samma sätt som programmet i introduktionen. I loopen läser programmet inpinnen som är kopplad till knappen och skriver ut olika text beroende på om knappens läge.
+
+Skriv in programmet i en sketch och tryck på pilknappen (upload). Nu ska det stå "Knapp inte tryckt" på displayen. Prova att trycka på knappen.
+```c++
+#include "SSD1306Wire.h"
 SSD1306Wire display(0x3c, 5, 4);
 
 void setup() {
@@ -178,3 +211,59 @@ void loop() {
   display.display();
 }
 ```
+
+### Beskrivning av programmets delar
+```c++
+#include "SSD1306Wire.h"
+SSD1306Wire display(0x3c, 5, 4);
+```
+Det här inkluderar vad som behövs för att använda displayen och konfigurerar att den är kopplad till pin 5 och 4.
+
+```c++
+void setup() {
+  display.init();
+  pinMode(17, INPUT_PULLUP);
+}
+```
+`display.init();` initierar displayen, behöver göras en gång när programmet startar.
+
+`pinMode(17, INPUT_PULLUP);` Ställer in pin 17 att vara en inpinne och att den är hög normalt (pullup)
+
+```
+void loop() {
+  display.clear();
+  int v = digitalRead(17);
+  if (v == HIGH) {
+    display.drawString(0, 0, "Knapp inte tryckt");
+  } else {
+    display.drawString(0, 0, "Knapp tryckt!");
+  }
+  display.display();
+}
+```
+`display.clear();` Rensar displayen, gör den svart.
+
+`int v = digitalRead(17);` Läser pin 17 och sparar resultatet i variabeln v. En variabel kan spara ett heltal som exempelvis 0, 3 eller -12. Det kommer mer om variabler senare.
+
+`if (v == HIGH) {` Jämför v med HIGH vilket är värdet v har om knappen inte är intryckt. `==` betyder "är lika med" i jämförelser. `if` (om) betyder att det som finns inom måsvingarna som kommer görs OM jämförelsen stämmer. Hela raden kallas för en if-sats.
+
+`display.drawString(0, 0, "Knapp inte tryckt");` Skriv ut texten "Knapp inte tryckt" på displayen. Nollorna betyder att det ska skrivas i övre vänstra hörnet.
+
+`} else {` Kan komma efter en if-sats. Else betyder annars och gör så att det som kommer inom måsvingarna görs om jämförelsen i if-satsen INTE stämmer.
+
+`display.drawString(0, 0, "Knapp tryckt!");` Skriv ut texten "Knapp tryckt!" på displayen.
+
+`display.display();` Gör så att det vi skrivit till skärmen visas.
+
+Det var mycket att gå igenom! Det gör ingenting om du inte hänger med i allt nytt här, det viktiga är att vi läst en pinne som är kopplad till knappen.
+
+### Utmaning
+Kan du ändra så att den skriver något annat på displayen? Ändra och provkör (tryck på pilen på menyraden).
+Kan du göra så att texten börjar någon annanstans än i övre högra hörnet? Prova dig fram!
+
+
+
+
+
+
+
