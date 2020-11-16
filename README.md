@@ -155,3 +155,26 @@ Ofta ritar man kretsar som ett schema för att lättare se hur den hänger ihop.
 ![](krets1.png)
 
 ESP32 är modulen. Den har massor av pinnar men bara de två vi använder är utmärkta. D1 är lysdioden, basen på triangeln är plus och spetsen som går mot ett streck är minus. R1 är motståndet (1 kΩ är 1000 ohm).
+
+## 2. Knapp
+```
+#include "SSD1306Wire.h"
+
+SSD1306Wire display(0x3c, 5, 4);
+
+void setup() {
+  display.init();
+  pinMode(17, INPUT_PULLUP);
+}
+
+void loop() {
+  display.clear();
+  int v = digitalRead(17);
+  if (v == HIGH) {
+    display.drawString(0, 0, "Knapp inte tryckt");
+  } else {
+    display.drawString(0, 0, "Knapp tryckt!");
+  }
+  display.display();
+}
+```
