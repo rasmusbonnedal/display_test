@@ -295,6 +295,7 @@ I det här experimentet ska vi koppla in fem lysdioder och blinka dem i olika m�
 2. Sätt i en lysdiod med det korta benet (-) i den blåa raden och det långa benet (+) i ett hål i samma kolumn.
 3. Sätt ett 1000 ohm motstånd på breadboarden med ett ben på varje sida mittlinjen, i samma kolumn som som lysdioden i (2).
 4. Dra en sladd från pin 16 på modulen till ett hål i samma kolumn som motståndet på breadborden. Se bild.
+<img src="exp4-1.jpg" width="512">
 
 Nu har vi kopplat in en lysdiod, vi testar med ett program som tänder den:
 
@@ -307,6 +308,7 @@ void loop() {
   digitalWrite(16, HIGH);
 }
 ```
+<img src="exp4-2.jpg" width="512">
 
 Du kan titta på ett tidigare exempel på hur man skriver in ett program och kör det.
 
@@ -314,7 +316,11 @@ Du kan titta på ett tidigare exempel på hur man skriver in ett program och kö
 Upprepa steg 2-4 i förra delen med fyra till lysdioder. Sätt lysdioderna på olika kolumner med lagom avstånd mellan.
 Koppla till pin 17, 18, 19 och 21 på modulen.
 
+<img src="exp4-3.jpg" width="512">
+
 Nu har vi fem lysdioder inkopplade på pin 16, 17, 18, 19 och 21 på modulen. Nu ska vi få dem att blinka i ett mönster.
+
+<img src="exp4-4.jpg" width="512">
 
 ### Programmet
 Det här programmet är lite längre men det är samma kod som upprepar sig fem gånger med små ändringar. Så här fungerar programmet
@@ -372,3 +378,5 @@ void loop() {
 
 ### Utmaning
 Prova att göra andra mönster. Se vad som händer om man byter några ettor och nollor i programmet (1 = tänd, 0 = släckt)
+
+Kan du få dem att blinka snabbare eller långsammare?
