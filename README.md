@@ -283,3 +283,92 @@ void loop() {
 ```
 
 Det här programmet är likt programmet från experiment 1. Vad är skillnaden?
+
+### Utmaning
+Försökt ta reda på _när_ den blå lysdioden lyser. Är det när man skriver HIGH till den? Eller när man skriver LOW? Vad är skillnaden mot experiment 1?
+
+## 4. Flera lysdioder
+I det här experimentet ska vi koppla in fem lysdioder och blinka dem i olika mönster.
+
+### Koppling
+1. Koppla in en svart sladd från GND på modulen till den blå linjen på breadboardet som i experiment 1.
+2. Sätt i en lysdiod med det korta benet (-) i den blåa raden och det långa benet (+) i ett hål i samma kolumn.
+3. Sätt ett 1000 ohm motstånd på breadboarden med ett ben på varje sida mittlinjen, i samma kolumn som som lysdioden i (2).
+4. Dra en sladd från pin 16 på modulen till ett hål i samma kolumn som motståndet på breadborden. Se bild.
+
+Nu har vi kopplat in en lysdiod, vi testar med ett program som tänder den:
+
+```c++
+void setup() {
+  pinMode(16, OUTPUT);
+}
+
+void loop() {
+  digitalWrite(16, HIGH);
+}
+```
+
+Du kan titta på ett tidigare exempel på hur man skriver in ett program och kör det.
+
+### Mera koppling
+Upprepa steg 2-4 i förra delen med fyra till lysdioder. Sätt lysdioderna på olika kolumner med lagom avstånd mellan.
+Koppla till pin 17, 18, 19 och 21 på modulen.
+
+Nu har vi fem lysdioder inkopplade på pin 16, 17, 18, 19 och 21 på modulen. Nu ska vi få dem att blinka i ett mönster.
+
+### Programmet
+Det här programmet är lite längre men det är samma kod som upprepar sig fem gånger med små ändringar. Så här fungerar programmet
+
+1. Tänd första lysdioden och släck de andra
+2. Vänta en halv sekund
+3. Tänd andra lysdioden och släck de andra
+4. Vänta en halv sekund
+5. ...
+
+Och så vidare tills alla lysdioder varit tända en gång. Då börjar programmet om igen. Resultatet är ett mönster som rör sig.
+
+```c++
+void setup() {
+  pinMode(16, OUTPUT);
+  pinMode(17, OUTPUT);
+  pinMode(18, OUTPUT);
+  pinMode(19, OUTPUT);
+  pinMode(21, OUTPUT);
+}
+
+void loop() {
+  digitalWrite(16, 1);
+  digitalWrite(17, 0);
+  digitalWrite(18, 0);
+  digitalWrite(19, 0);
+  digitalWrite(21, 0);
+  delay(500);
+  digitalWrite(16, 0);
+  digitalWrite(17, 1);
+  digitalWrite(18, 0);
+  digitalWrite(19, 0);
+  digitalWrite(21, 0);
+  delay(500);
+  digitalWrite(16, 0);
+  digitalWrite(17, 0);
+  digitalWrite(18, 1);
+  digitalWrite(19, 0);
+  digitalWrite(21, 0);
+  delay(500);
+  digitalWrite(16, 0);
+  digitalWrite(17, 0);
+  digitalWrite(18, 0);
+  digitalWrite(19, 1);
+  digitalWrite(21, 0);
+  delay(500);
+  digitalWrite(16, 0);
+  digitalWrite(17, 0);
+  digitalWrite(18, 0);
+  digitalWrite(19, 0);
+  digitalWrite(21, 1);
+  delay(500);
+}
+```
+
+### Utmaning
+Prova att göra andra mönster. Se vad som händer om man byter några ettor och nollor i programmet (1 = tänd, 0 = släckt)
