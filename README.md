@@ -1,6 +1,12 @@
 # Elektronikpyssel med Arduino
 ## Innehåll
 * Arduinomodul ESP32 Wroom med SSD1306 OLED 128x64 på i2c
+* Kopplingsbord (breadboard)
+* Sladdar för koppling mellan modul och breadboard (pigg på ena sidan, hål på andra)
+* Sladdar för koppling på breadboard (piggar på båda sidor)
+* 5 knappar
+* 10 lysdioder i olika färger
+När du packar upp kan du ta bord displayskyddet genom att dra av plasten med den röda flärpen.
 
 ## Förberedelser
 1. Ladda ner och installera Arduino Software från https://www.arduino.cc/en/Main/Software “Windows Installer”.
