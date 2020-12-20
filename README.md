@@ -8,6 +8,7 @@
 * 10 lysdioder i olika färger
 * 10 1 kohm-motstånd
 * USB-kabel för inkoppling till dator eller strömkälla exempelvis telefonladdare
+
 När du packar upp kan du ta bord displayskyddet genom att dra av plasten med den röda flärpen.
 
 ## Förberedelser
