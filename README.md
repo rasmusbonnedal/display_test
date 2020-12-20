@@ -6,6 +6,7 @@
 * Sladdar för koppling på breadboard (piggar på båda sidor)
 * 5 knappar
 * 10 lysdioder i olika färger
+* 10 1 kohm-motstånd
 När du packar upp kan du ta bord displayskyddet genom att dra av plasten med den röda flärpen.
 
 ## Förberedelser
